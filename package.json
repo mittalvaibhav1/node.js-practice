@@ -1,0 +1,25 @@
+{
+  "name": "node.js-practice",
+  "version": "1.0.0",
+  "description": "This repo contains my node.js practice codes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mittalvaibhav1/node.js-practice.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mittalvaibhav1/node.js-practice/issues"
+  },
+  "homepage": "https://github.com/mittalvaibhav1/node.js-practice#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  }
+}
