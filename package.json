@@ -1,25 +1,16 @@
 {
-  "name": "node.js-practice",
-  "version": "1.0.0",
-  "description": "This repo contains my node.js practice codes.",
-  "main": "index.js",
+  "name": "confusionserver",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mittalvaibhav1/node.js-practice.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mittalvaibhav1/node.js-practice/issues"
-  },
-  "homepage": "https://github.com/mittalvaibhav1/node.js-practice#readme",
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "morgan": "^1.10.0"
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1"
   }
 }
