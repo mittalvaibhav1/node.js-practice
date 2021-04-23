@@ -3,6 +3,8 @@ const http = require("http");
 const path = require("path");
 const morgan = require("morgan");
 const dishRouter = require("./routes/dishRouter");
+const promoRouter = require("./routes/promoRouter");
+const leaderRouter = require("./routes/leaderRouter");
 
 const hostname = "localhost";
 const port = 3000;
@@ -13,24 +15,8 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/dishes", dishRouter);
-
-app.get("/dishes/:dishId", (req, res) => {
-    res.end("Will send all the dish with id " + req.params.dishId);
-});
-
-app.post("/dishes/:dishId", (req, res) => {
-    res.statusCode = 403;
-    res.end("POST operation not supported on /dishes/" + req.params.dishId);
-});
-
-app.put("/dishes/:dishId", (req, res) => {
-    res.end("Updated dish with id " + req.params.dishId);
-});
-
-app.delete("/dishes/:dishId", (req, res) => {
-    res.end("Deleting the dish with id " + req.params.dishId);
-});
-
+app.use("/promotions", promoRouter);
+app.use("/leaders", leaderRouter);
 
 app.use(express.static(path.join(__dirname, "./public")));
 
