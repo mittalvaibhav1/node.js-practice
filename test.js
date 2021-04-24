@@ -1,29 +1,27 @@
-const MongoClient = require("mongodb").MongoClient;
-const assert = require("assert");
+const mongoose = require("mongoose");
+const Dishes = require("./models/dishes");
 
-const url = "mongodb://localhost:27017/";
-const dbName = "confusion";
+const url = "mongodb://localhost:27017/confusion";
+const connect = mongoose.connect(url);
 
-MongoClient.connect(url, (err, client) => {
-    assert.equal(err, null);
-    console.log('Connected correctly to the server');
-    const db = client.db(dbName);
-    const collection = db.collection("dishes");
-
-    collection.insertOne({ name: "Uthappizza", description : "test" }, (err, result) => {
-        assert.equal(err, null);
-        console.log("After Insert: \n");
-        console.log(result.ops);
-
-        collection.find({}).toArray((err, docs) => {
-            assert.equal(err, null);
-            console.log("Found: \n");
-            console.log(docs);
-
-            db.dropCollection("dishes", (err, result) => {
-                assert.equal(err, null);
-                client.close();
-            });
-        });
-    });
+connect.then((db) => {
+    console.log("Connected to the db.");
+    Dishes.create({
+        name: 'Pizzaa',
+        description: 'test'
+    })
+    .then((dish) => {
+        console.log(dish);
+        return Dishes.find({}).exec();
+    })
+    .then((dishes) => {
+        console.log(dishes);
+        return Dishes.remove({});
+    })
+    .then(() => {
+        return mongoose.connection.close();
+    })
+    .catch(err => {
+        console.log(err);
+    })
 });
