@@ -41,7 +41,6 @@ promoRouter.route("/:promoId")
 .get((req, res, next) => {
     Promotions.findById(req.params.promoId)
     .then((promotion) => {
-        console.log("Promotion Added!");
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
         res.json(promotion);
