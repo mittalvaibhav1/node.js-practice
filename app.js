@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const session = require("express-session");
+const FileStore = require('session-file-store')(session);
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -11,7 +13,6 @@ const leaderRouter = require('./routes/leaderRouter');
 const promoRouter = require('./routes/promoRouter');
 
 const mongoose = require("mongoose");
-const Dishes = require("./models/dishes");
 
 const url = "mongodb://localhost:27017/confusion";
 const connect = mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true});
@@ -29,7 +30,48 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser("12345-67890-54321"));
+
+app.use((req, res, next) => {
+  console.log(req.signedCookies);
+
+  if(!req.signedCookies.user) {
+    const authHeader = req.headers.authorization;
+    if(!authHeader) {
+      const err = new Error("You are not authenticated!");
+      res.setHeader("WWW-Authenticate", "Basic");
+      err.status = 401;
+      return next(err);
+    }
+    const auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
+    const username = auth[0];
+    const password = auth[1];
+
+    if(username === 'admin' && password === 'password') {
+      res.cookie("user", "admin", { signed: true });
+      next();
+    }
+    else {
+      const err = new Error("You are not authenticated!");
+      res.setHeader("WWW-Authenticate", "Basic");
+      err.status = 401;
+      return next(err);
+    }
+  }
+  else {
+    if(req.signedCookies.user === "admin") {
+      next();
+    }
+    else {
+      const err = new Error("You are not authenticated!");
+      err.status = 401;
+      return next(err);
+    }
+  }
+
+  
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
