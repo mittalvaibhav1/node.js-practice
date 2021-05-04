@@ -1,4 +1,5 @@
 const express = require('express');
+const authenticate = require('../authenticate');
 const passport = require('passport');
 const router = express.Router();
 const Users = require("../models/user");
@@ -27,9 +28,10 @@ router.post("/signup", (req, res, next) => {
 });
 
 router.post("/login", passport.authenticate('local'), (req, res) => {
+  const token = authenticate.getToken({_id: req.user._id});
   res.statusCode = 200;
-  res.setHeader("Content-Type", "application/json");
-  res.json({ status: "Login Successful", successs: true })
+  res.setHeader('Content-Type', 'application/json');
+  res.json({success: true, token: token, status: 'You are successfully logged in!'});
 });
 
 router.get("/logout", (req, res, next) => {
@@ -43,6 +45,6 @@ router.get("/logout", (req, res, next) => {
         err.status = 403;
         return next(err);
   }
-})
+});
 
 module.exports = router;
