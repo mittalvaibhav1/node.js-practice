@@ -16,8 +16,8 @@ module.exports.getToken = function(user) {
 }
 
 const opts = {
-    jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey = config.secretKey
+    jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey : config.secretKey
 }
 
 module.exports.jwtPassport = passport.use(new JwtStratergy(opts, (jwt_payload, done) => {
